@@ -25,6 +25,18 @@ const inputs = [
         'Add an Employee', 'Add an Employee Role', 'Quit'],
         name: "startOptions"
     },
+    // {
+    //     type:'input',
+    //     message: 'Enter the name of the Department',
+    //     name: 'inputDepartmentName',
+    //     when: (response)=>(response.startOptions === 'Add a Department')
+    // },
+    // {
+    //     type:'input',
+    //     message: 'Enter the name of the Role',
+    //     name: 'inputRoleName',
+    //     when: (response)=>(response.startOptions === 'Add a Role')
+    // },
 ];
 
 function startQuestions(){
@@ -116,7 +128,13 @@ function addRole(){
                 name: 'salary',
                 message: 'Add Salary'
              },
-             
+             {
+                type:'list',
+                name:'departmentOptions',
+                message: 'Select Department to add Role',
+                choices:res.map(department => department.name)
+             }
+
         ]).then(data =>{
             // takes answer from departmentOptions questions and finds a matching department name in res, converts back to
             // object with its id
@@ -132,40 +150,40 @@ function addRole(){
     })
 }
 
-// function addEmployee(){
-//     db.query('SELECT id FROM role',(err, res)=>{
-//         if(err) throw err
-//         inquirer.prompt([
-//             {
-//                 type: 'input',
-//                 name: 'roleTitle',
-//                 message: 'Add Role Title'
-//              },
-//              {
-//                 type: 'input',
-//                 name: 'salary',
-//                 message: 'Add Salary'
-//              },
-//              {
-//                 type:'list',
-//                 name:'departmentOptions',
-//                 message: 'Select Department to add Role',
-//                 choices:res.map(department => department.name)
-//              }
+function addEmployee(){
+    db.query('SELECT * FROM department',(err, res)=>{
+        if(err) throw err
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'roleTitle',
+                message: 'Add Role Title'
+             },
+             {
+                type: 'input',
+                name: 'salary',
+                message: 'Add Salary'
+             },
+             {
+                type:'list',
+                name:'departmentOptions',
+                message: 'Select Department to add Role',
+                choices:res.map(department => department.name)
+             }
 
-//         ]).then(data =>{
-//             // takes answer from departmentOptions questions and finds a matching department name in res, converts back to
-//             // object with its id
-//             let chosenDepartment = res.find(department => department.name === data.departmentOptions)
-//             db.query('INSERT INTO role SET ?',{
+        ]).then(data =>{
+            // takes answer from departmentOptions questions and finds a matching department name in res, converts back to
+            // object with its id
+            let chosenDepartment = res.find(department => department.name === data.departmentOptions)
+            db.query('INSERT INTO role SET ?',{
                 
-//                 title: data.roleTitle,
-//                 salary:data.salary,
-//                 department_id: chosenDepartment.id
-//             })
-//             startQuestions();
-//         })
-//     })
-// }
+                title: data.roleTitle,
+                salary:data.salary,
+                department_id: chosenDepartment.id
+            })
+            startQuestions();
+        })
+    })
+}
 
 startQuestions();
