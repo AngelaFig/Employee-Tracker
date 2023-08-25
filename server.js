@@ -150,40 +150,40 @@ function addRole(){
     })
 }
 
-function addEmployee(){
-    db.query('SELECT * FROM role',(err, res)=>{
-        if(err) throw err
-        inquirer.prompt([
-            {
-                type: 'input',
-                name: 'employeeName',
-                message: 'Add Employee Name'
-             },
-             {
-                type: 'input',
-                name: 'salary',
-                message: 'Add Salary'
-             },
-             {
-                type:'list',
-                name:'departmentOptions',
-                message: 'Select Department to add Role',
-                choices:res.map(department => department.name)
-             }
+// function addEmployee(){
+//     db.query('SELECT * FROM role',(err, res)=>{
+//         if(err) throw err
+//         inquirer.prompt([
+//             {
+//                 type: 'input',
+//                 name: 'employeeName',
+//                 message: 'Add Employee Name'
+//              },
+//              {
+//                 type: 'input',
+//                 name: 'salary',
+//                 message: 'Add Salary'
+//              },
+            //  {
+            //     type:'list',
+            //     name:'departmentOptions',
+            //     message: 'Select Department to add Role',
+            //     choices:res.map(department => department.name)
+            //  }
 
-        ]).then(data =>{
-            // takes answer from departmentOptions questions and finds a matching department name in res, converts back to
-            // object with its id
-            let chosenDepartment = res.find(department => department.name === data.departmentOptions)
-            db.query('INSERT INTO role SET ?',{
+    //     ]).then(data =>{
+    //         // takes answer from departmentOptions questions and finds a matching department name in res, converts back to
+    //         // object with its id
+    //         let chosenDepartment = res.find(department => department.name === data.departmentOptions)
+    //         db.query('INSERT INTO role SET ?',{
                 
-                title: data.employeeName,
-                salary:data.salary,
-                department_id: chosenDepartment.id
-            })
-            startQuestions();
-        })
-    })
-}
+    //             title: data.employeeName,
+    //             salary:data.salary,
+    //             department_id: chosenDepartment.id
+    //         })
+    //         startQuestions();
+    //     })
+    // })
+// }
 
 startQuestions();
