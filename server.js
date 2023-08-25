@@ -151,13 +151,13 @@ function addRole(){
 }
 
 function addEmployee(){
-    db.query('SELECT * FROM department',(err, res)=>{
+    db.query('SELECT * FROM role',(err, res)=>{
         if(err) throw err
         inquirer.prompt([
             {
                 type: 'input',
-                name: 'roleTitle',
-                message: 'Add Role Title'
+                name: 'employeeName',
+                message: 'Add Employee Name'
              },
              {
                 type: 'input',
@@ -177,7 +177,7 @@ function addEmployee(){
             let chosenDepartment = res.find(department => department.name === data.departmentOptions)
             db.query('INSERT INTO role SET ?',{
                 
-                title: data.roleTitle,
+                title: data.employeeName,
                 salary:data.salary,
                 department_id: chosenDepartment.id
             })
